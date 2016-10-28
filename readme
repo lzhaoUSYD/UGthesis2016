@@ -1,0 +1,19 @@
+Final code for running from start to finish, starting from coordinates manually extracted from the original COMSOL model.
+[s] script
+[f] function
+
+Core workflow:
+1. get_coords [s]: Load COMSOL model, extract (x,y,z) coordinates of manually identified COMSOL domain and boundary numbers. COMSOL model not included in this repository.
+
+2. runSplinesV3 [s]: Generates splines based on coordinates of anatomical structures from COMSOL. Calls splining, segmentBSP. Loads splining.xlsx, a manually populated spreadsheet of primary nodes.
+
+3. runStimPatternsV4 [s]: Specifies electrode configurations to simulate. Contains all possible configurations between monopolar (MP), bipolar (BP), bipolar+1 (BP+1), bipolar+2 (BP+2), tripolar (TP) and partial tripolar (pTP) configurations. Saves all results in .mat files and all figures as .fig files. Calls oneShotStimPattern.
+
+4. runPostprocessingV4 [s]: Takes simulation results and calculates the activating function for the "unrolled" sheet of cochlear tissue, as per Wong et al 2014. Then determines which fibres are active and counts them. Calls plotAF.
+
+Key helper functions:
+splining [f]: (Adapted from Wong (2015)) Creates 100 or a user-specified number of spline segments from the input coordinates, at equal (default) or user-specified intervals. Calls arclength and interparc (from Matlab Exchange).
+oneShotStimPattern [f]: A single simulation given the model and stimulation parameters.
+plotAF [f]: Takes AF results from runPostProcessingV2 and visualises the AF surface, electrode influence and active fibres. 
+
+In hindsight, this code is rather poorly structured since little consideration was given in that regard during the process of pumping out this workflow. There are many helper functions not listed here but included in the repository, ranging from little things like plotting (plotV.m), manipulating 3D coordinates (closeTheLoop.m, drawSphere.m) to setting up the nerve geometry (segmentBSP.m).
