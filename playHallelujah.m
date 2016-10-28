@@ -1,0 +1,1 @@
+load handel; sound(y(1800:1.8e4),Fs); clear y Fs
